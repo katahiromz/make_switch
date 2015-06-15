@@ -9,6 +9,22 @@
 #include "make_switch.h"
 
 /**************************************************************************/
+/* find file title */
+
+const char *find_file_title(const char *s)
+{
+    const char *p;
+    for (;;)
+    {
+        p = s + strcspn(s, "\\/");
+        if (*p == 0)
+            break;
+        s = p + 1;
+    }
+    return s;
+}
+
+/**************************************************************************/
 /* the main function */
 
 int main(int argc, char **argv)
@@ -17,12 +33,7 @@ int main(int argc, char **argv)
     {
         char *program;
         size_t i;
-        program = argv[0];
-        i = strcspn(program, "\\/");
-        if (program[i] != 0)
-        {
-            program += i + 1;
-        }
+        program = find_file_title(argv[0]);
         printf("Usage: %s string1 string2 ...", program);
         return 0;
     }
