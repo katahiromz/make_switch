@@ -8,6 +8,9 @@
     This software generates C switch statements or a function code from 
 strings to identify a string.
 
+Tested on Visual C++ 2013, Borland C++ Compiler 5.5.1,
+MinGW gcc, Ubuntu gcc and Ubuntu clang.
+
 For example, the three strings:
 
     "abb",
@@ -68,9 +71,7 @@ The generated "identify_string" function returns:
 
 [REQUIREMENTS]
 
-    * C compiler
-
-Tested on Visual C++ 2013, MinGW gcc, Ubuntu gcc and Ubuntu clang.
+    C compiler
 
 /////////////////////////////////////////////////////
 // Katayama Hirofumi MZ (katahiromz) [ARMYANT]
