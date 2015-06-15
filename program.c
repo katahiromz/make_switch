@@ -31,9 +31,7 @@ int main(int argc, char **argv)
 {
     if (argc <= 1)
     {
-        char *program;
-        size_t i;
-        program = find_file_title(argv[0]);
+        const char *program = find_file_title(argv[0]);
         printf("Usage: %s string1 string2 ...", program);
         return 0;
     }

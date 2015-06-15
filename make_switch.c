@@ -26,15 +26,18 @@ extern "C"
 
 /**************************************************************************/
 
-void ms_do_indent(int n)
+/* make indent */
+void ms_make_indent(int n)
 {
     int i;
 #if (MS_TAB_WIDTH < 0)
+    /* print n tabs out */
     for (i = 0; i < n; ++i)
     {
         putchar('\t');
     }
-#else
+#else   /* !(MS_TAB_WIDTH < 0) */
+    /* print (n * MS_TAB_WIDTH) space characters out */
     int j;
     for (i = 0; i < n; ++i)
     {
@@ -43,9 +46,10 @@ void ms_do_indent(int n)
             putchar(' ');
         }
     }
-#endif
+#endif  /* !(MS_TAB_WIDTH < 0) */
 }
 
+/* make switch statements to identify the string */
 void ms_make_switch(MS_MAKE_SWITCH *pms, int depth, int ident_level)
 {
     int i;
@@ -53,40 +57,49 @@ void ms_make_switch(MS_MAKE_SWITCH *pms, int depth, int ident_level)
     {
         if (pms->checks[i] || memcmp(pms->entries[i], pms->str, depth))
         {
+            /* ignore it */
             continue;
         }
-        ms_do_indent(ident_level);
+        ms_make_indent(ident_level);
         if (pms->entries[i][depth])
         {
+            /* not end of string */
             printf("case '%c':\n", pms->entries[i][depth]);
-            ms_do_indent(ident_level + 1);
+            ms_make_indent(ident_level + 1);
             printf("switch (s[%d])\n", depth + 1);
-            ms_do_indent(ident_level + 1);
+            ms_make_indent(ident_level + 1);
             puts("{");
+                /* set the current character */
                 pms->str[depth] = pms->entries[i][depth];
+                /* recurse */
                 ms_make_switch(pms, depth + 1, ident_level + 1);
-                ms_do_indent(ident_level + 1);
+                /* default: return -1; */
+                ms_make_indent(ident_level + 1);
                 puts("default:");
-                ms_do_indent(ident_level + 2);
-                puts("return -1;");
-                ms_do_indent(ident_level + 1);
+                ms_make_indent(ident_level + 2);
+                puts("return -1;");     /* -1 means 'not matched' */
+            ms_make_indent(ident_level + 1);
             puts("}");
         }
         else
         {
+            /* end of string */
             puts("case 0:");
-            ms_do_indent(ident_level + 1);
-            printf("return %d;\n", i);
+            ms_make_indent(ident_level + 1);
+            printf("return %d;\n", i);  /* i is the index of the string */
+            /* check it */
             pms->checks[i] = 1;
         }
     }
 }
 
+/* make a function code to identify the string */
 int ms_make_identify_string_function(int count, char **entries)
 {
     int i, len, max_length;
     MS_MAKE_SWITCH ms;
 
+    /* calculate the maximum length */
     max_length = 0;
     for (i = 0; i < count; ++i)
     {
@@ -95,6 +108,7 @@ int ms_make_identify_string_function(int count, char **entries)
             max_length = len;
     }
 
+    /* fill the structure */
     ms.count = count;
     ms.str = (char *)malloc(max_length + 1);
     ms.entries = entries;
@@ -102,27 +116,30 @@ int ms_make_identify_string_function(int count, char **entries)
 
     if (ms.str == NULL || ms.checks == NULL)
     {
+        /* allocation failed */
         free(ms.str);
         free(ms.checks);
-        return 0;
+        return 0;   /* failure */
     }
 
+    /* print out the function code */
     puts("int identify_string(const char *s)\n{");
-        ms_do_indent(1);
+        ms_make_indent(1);
         printf("switch (s[0])\n");
-        ms_do_indent(1);
+        ms_make_indent(1);
         puts("{");
         ms_make_switch(&ms, 0, 1);
-        ms_do_indent(1);
+        ms_make_indent(1);
         puts("default:");
-            ms_do_indent(2);
+            ms_make_indent(2);
             puts("return -1;");
-        ms_do_indent(1);
+        ms_make_indent(1);
     puts("}\n}");
 
+    /* free up */
     free(ms.str);
     free(ms.checks);
-    return 1;
+    return 1;   /* success */
 }
 
 /**************************************************************************/

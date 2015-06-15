@@ -13,6 +13,7 @@ extern "C"
 
 /**************************************************************************/
 
+/* MS_MAKE_SWITCH structure */
 typedef struct MS_MAKE_SWITCH
 {
     int count;
@@ -21,8 +22,13 @@ typedef struct MS_MAKE_SWITCH
     char *checks;
 } MS_MAKE_SWITCH;
 
-void ms_do_indent(int n);
+/* make indent */
+void ms_make_indent(int n);
+
+/* make switch statements to identify the string */
 void ms_make_switch(MS_MAKE_SWITCH *pms, int depth, int ident_level);
+
+/* make a function code to identify the string */
 int ms_make_identify_string_function(int count, char **entries);
 
 /**************************************************************************/
