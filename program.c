@@ -1,7 +1,15 @@
+/**************************************************************************/
+/* program.c --- generate switch statements to identify string            */
+/* Copyright (C) 2015 Katayama Hirofumi MZ.  All Rights Reserved.         */
+/**************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "make_switch.h"
+
+/**************************************************************************/
+/* the main function */
 
 int main(int argc, char **argv)
 {
@@ -23,3 +31,5 @@ int main(int argc, char **argv)
 
     return 0;
 }
+
+/**************************************************************************/

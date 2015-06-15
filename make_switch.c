@@ -1,28 +1,41 @@
+/**************************************************************************/
+/* make_switch.c --- generate switch statements to identify string        */
+/* Copyright (C) 2015 Katayama Hirofumi MZ.  All Rights Reserved.         */
+/**************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "make_switch.h"
 
+/**************************************************************************/
+/* configuration */
+
+/* #define MS_TAB_WIDTH 3 */
+#define MS_TAB_WIDTH 4
+/* #define MS_TAB_WIDTH 8 */
+/* #define MS_TAB_WIDTH -1 */   /* "\t" */
+
+/**************************************************************************/
+
 void ms_do_indent(int n)
 {
-    int i, j;
-    if (MS_TAB_WIDTH < 0)
+    int i;
+#if (MS_TAB_WIDTH < 0)
+    for (i = 0; i < n; ++i)
     {
-        for (i = 0; i < n; ++i)
+        putchar('\t');
+    }
+#else
+    int j;
+    for (i = 0; i < n; ++i)
+    {
+        for (j = 0; j < MS_TAB_WIDTH; ++j)
         {
-            putchar('\t');
+            putchar(' ');
         }
     }
-    else
-    {
-        for (i = 0; i < n; ++i)
-        {
-            for (j = 0; j < MS_TAB_WIDTH; ++j)
-            {
-                putchar(' ');
-            }
-        }
-    }
+#endif
 }
 
 void ms_make_switch(MS_MAKE_SWITCH *pms, int depth, int ident_level)
@@ -103,3 +116,5 @@ int ms_make_identify_string_function(int count, char **entries)
     free(ms.checks);
     return 1;
 }
+
+/**************************************************************************/
